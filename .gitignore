@@ -1,3 +1,7 @@
+# credentials, etc.
 config.py
+
+# ide files
 .idea
+__pycache__
 venv
