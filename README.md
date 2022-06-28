@@ -1,4 +1,4 @@
 # ToggleHelper
-Small python project to optimize Toggle routines.
+Small python project to optimize [Toggle](https://track.toggl.com) routines.
 
-Before starting work, call ./bootstrap.sh.
+Before starting work, call `./bootstrap.sh`.
