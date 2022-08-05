@@ -1,5 +1,5 @@
-from toggl.TogglPy import Toggl
 import requests
+from toggl.TogglPy import Toggl
 
 import config
 from rally import rally_rest
@@ -34,9 +34,9 @@ if __name__ == '__main__':
     rally = False
 
     if daily:
-        create_new_time_entity(range(23, 24), time_entities.createDaily)
+        create_new_time_entity(range(23, 24), time_entities.create_daily)
     if english:
-        create_new_time_entity([1], time_entities.createEnglish)
+        create_new_time_entity([1], time_entities.create_english)
     if rally:
         response = query_rally_tasks()
         print(response.text)
