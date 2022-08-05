@@ -8,5 +8,7 @@ if [ ! -f "$FILE" ]; then
 password_toggle = ''
 
 username_rally = ''
-api_key_rally = ''" > "$FILE"
+api_key_rally = ''
+
+country = ''" > "$FILE"
 fi
