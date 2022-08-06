@@ -4,7 +4,7 @@ import holidays
 import config
 
 
-def get_this_month():
+def get_this_month_range():
     month = date.today().month
     year = date.today().year
 
