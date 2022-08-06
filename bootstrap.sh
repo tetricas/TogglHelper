@@ -12,3 +12,5 @@ api_key_rally = ''
 
 country = ''" > "$FILE"
 fi
+
+pip install -r requirements.txt

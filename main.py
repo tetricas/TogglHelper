@@ -4,8 +4,8 @@ from utils.dates import get_this_month_range
 
 
 if __name__ == '__main__':
-    is_daily = False
-    is_english = False
+    is_daily = True
+    is_english = True
     is_rally = True
 
     this_month = list(get_this_month_range())
