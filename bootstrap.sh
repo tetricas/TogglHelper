@@ -10,7 +10,13 @@ password_toggle = ''
 username_rally = ''
 api_key_rally = ''
 
-country = ''" > "$FILE"
+country = ''
+vacation = []
+
+project_id =
+organization_id =
+workspace_id =
+internal_id =" > "$FILE"
 fi
 
 pip install -r requirements.txt
