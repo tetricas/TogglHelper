@@ -1,4 +1,2 @@
 requests
-toggl
-TogglPy
 holidays
