@@ -4,21 +4,10 @@ import json
 from rally import rally_rest, rally_task
 
 
-def get_rally_tasks(start_day, reported_tasks_names):
+def get_rally_tasks(start_day):
     tasks = list(query_rally_tasks(start_day))
     tasks.sort(key=lambda el: el.start_at, reverse=True)
-    for task in tasks:
-        if task.name in reported_tasks_names.keys():
-            task.hours_done -= reported_tasks_names[task.name]
-
-        days_count = int(task.hours_done / 8)
-        while days_count > 0:
-            yield task.name, 8
-            days_count -= 1
-
-        modulo = task.hours_done % 8
-        if modulo and modulo > 1:  # English lesson
-            yield task.name, modulo
+    return tasks
 
 
 def query_rally_tasks(start_date):
