@@ -1,37 +1,33 @@
-from rally.rally_data import get_rally_tasks
-from toggle import time_entities
-from toggle.toggle_sender import ToggleSender
-from utils.dates import get_this_month_range
+from datetime import datetime, timedelta
 
+from rally.rally_data import get_rally_tasks
+
+from toggle.time_entities import create_time_entity, beginning_of_the_day
+from toggle.toggle_sender import ToggleSender
+
+from utils.dates import get_this_month_range
+from utils.tasks_bridge import adapt_rally_to_toggle
 
 if __name__ == '__main__':
-    is_daily = True
-    is_english = True
-    is_rally = True
 
     toggle_sender = ToggleSender()
-    last_day, was_full, tasks_names = toggle_sender.get_last_tasks_data()
+    last_day, was_full, reported_tasks = toggle_sender.get_last_tasks_data()
     if was_full:
         last_day += 1
 
     this_month = list(get_this_month_range(last_day))
 
-    if is_rally:
-        rally_tasks = list(get_rally_tasks(this_month[0][0], tasks_names))
+    rally_tasks = get_rally_tasks(this_month[0][0])
+    days_to_report = adapt_rally_to_toggle(reported_tasks, rally_tasks)
 
     for date, weekday in this_month:
-        if weekday in range(0, 4):
-            if is_daily:
-                toggle_sender.send_time_entity(time_entities.create_daily(date))
-            if is_rally:
-                task = rally_tasks.pop()
-                toggle_sender.send_time_entity(time_entities.create_rally(date, task[0]))
-        elif weekday == 4:
-            if is_rally:
-                task = rally_tasks.pop()
-                toggle_sender.send_time_entity(time_entities.create_rally_friday_before(date, task[0]))
-                toggle_sender.send_time_entity(time_entities.create_rally_friday_after(date, task[0]))
-            if is_english:
-                toggle_sender.send_time_entity(time_entities.create_english(date))
-        else:
-            continue
+        is_friday = weekday == 4
+        day = days_to_report.pop()
+        report_data = day.generate_report(is_friday)
+
+        current_time = datetime.strptime(beginning_of_the_day, '%H:%M')
+        for task in report_data:
+            time = current_time.strftime('%H:%M')
+            time_entity = create_time_entity(task.name, date, time, task.time)
+            toggle_sender.send_time_entity(time_entity)
+            current_time += timedelta(hours=task.time)
