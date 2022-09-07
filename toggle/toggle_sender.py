@@ -65,4 +65,4 @@ class ToggleSender:
 
         hour = 3600
 
-        return last_date.day, day_hours == hour * 8, tasks_names
+        return last_date, day_hours == hour * 8, tasks_names

@@ -23,7 +23,13 @@ class ToggleDay:
         self.tasks = list()
 
     def day_is_full(self):
+        if self.total_hours > self.MAX_HOURS:
+            raise RuntimeError
+
         return self.total_hours == self.MAX_HOURS
+
+    def day_is_valid(self):
+        return self.total_hours > 0
 
     def append_task(self, name, time):
         if self.day_is_full():
@@ -34,8 +40,10 @@ class ToggleDay:
             self.total_hours += time
             return True, 0
         else:
-            time_left = time + self.total_hours - self.MAX_HOURS
-            self.tasks.append(ToggleTask(name, time - time_left))
+            time_left = round(time + self.total_hours - self.MAX_HOURS, 1)
+            time_to_fill = round(time - time_left, 1)
+            self.tasks.append(ToggleTask(name, time_to_fill))
+            self.total_hours += time_to_fill
             return True, time_left
 
     def generate_report(self, is_friday):
@@ -50,14 +58,19 @@ class ToggleDay:
                 while time_before_english < HOURS_BEFORE_ENGLISH:
                     if time_before_english + self.tasks[index].time > HOURS_BEFORE_ENGLISH:
                         time_after = self.tasks[index].time - (HOURS_BEFORE_ENGLISH - time_before_english)
-                        self.tasks[index].time -= time_after
+                        self.tasks[index].time -= round(time_after, 1)
                         name = self.tasks[index].name
-                        self.tasks.insert(++index, ToggleTask(english_name, 1))
-                        self.tasks.insert(++index, ToggleTask(name, time_after - 1))
+                        index += 1
+                        self.tasks.insert(index, ToggleTask(english_name, 1))
+                        if time_after > 1:
+                            index += 1
+                            self.tasks.insert(index, ToggleTask(name, time_after - 1))
                         break
                     elif time_before_english + self.tasks[index].time == HOURS_BEFORE_ENGLISH:
-                        self.tasks.insert(++index, ToggleTask(english_name, 1))
-                        self.tasks[++index].time -= 1
+                        index += 1
+                        self.tasks.insert(index, ToggleTask(english_name, 1))
+                        index += 1
+                        self.tasks[index].time -= 1
 
                     time_before_english += self.tasks[index].time
                     index += 1

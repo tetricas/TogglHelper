@@ -13,16 +13,16 @@ if __name__ == '__main__':
     toggle_sender = ToggleSender()
     last_day, was_full, reported_tasks = toggle_sender.get_last_tasks_data()
     if was_full:
-        last_day += 1
+        last_day += timedelta(days=1)
 
-    this_month = list(get_this_month_range(last_day))
+    this_month = list(get_this_month_range(last_day.day))
 
     rally_tasks = get_rally_tasks(this_month[0][0])
     days_to_report = adapt_rally_to_toggle(reported_tasks, rally_tasks)
 
     for date, weekday in this_month:
         is_friday = weekday == 4
-        day = days_to_report.pop()
+        day = days_to_report.pop(0)
         report_data = day.generate_report(is_friday)
 
         current_time = datetime.strptime(beginning_of_the_day, '%H:%M')
