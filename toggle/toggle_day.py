@@ -77,7 +77,8 @@ class ToggleDay:
             else:
                 self.tasks[0] = ToggleTask(self.tasks[0].name, HOURS_BEFORE_ENGLISH)
                 self.tasks.append(ToggleTask(english_name, 1))
-                self.tasks.append(ToggleTask(self.tasks[0].name, 3))
+                hours_left = self.MAX_HOURS - HOURS_BEFORE_ENGLISH - 1
+                self.tasks.append(ToggleTask(self.tasks[0].name, hours_left))
         else:
             self.tasks.insert(0, ToggleTask(daily_name, 0.25))
             self.tasks[1].time -= 0.25  # 15 min for the Daily

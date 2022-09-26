@@ -22,6 +22,8 @@ if __name__ == '__main__':
 
     for date, weekday in this_month:
         is_friday = weekday == 4
+        if len(days_to_report) == 0:
+            break
         day = days_to_report.pop(0)
         report_data = day.generate_report(is_friday)
 
