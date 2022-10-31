@@ -1,4 +1,4 @@
 host = 'https://rally1.rallydev.com/slm/webservice/v2.0'
 
-rally_artifacts_route = '/artifact'
-rally_task_route = '/task'
+artifacts_route = '/artifact'
+task_route = '/task'
