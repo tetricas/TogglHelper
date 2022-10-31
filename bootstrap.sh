@@ -7,8 +7,11 @@ if [ ! -f "$FILE" ]; then
    echo "username_toggle = ''
 password_toggle = ''
 
-username_rally = ''
+username_work = ''
 api_key_rally = ''
+
+jira_domain = ''
+api_key_jira = ''
 
 country = ''
 vacation = []
