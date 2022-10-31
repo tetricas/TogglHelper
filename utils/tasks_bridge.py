@@ -4,6 +4,21 @@ TOGGLE_DAY = ToggleDay.MAX_HOURS
 RALLY_DAY = 5
 
 
+def adapt_jira_to_toggle(reported_tasks, jira_tasks):
+    days_ready_for_report = list()
+    toggle_day = ToggleDay()
+
+    for task in jira_tasks:
+        should_continue, task = check_reported_data(reported_tasks, task)
+        if should_continue:
+            continue
+
+        toggle_day.append_task(task.name, task.hours_done, task.start_at.strftime("%Y-%m-%d"))
+        toggle_day = check_full_day(days_ready_for_report, toggle_day)
+
+    return days_ready_for_report
+
+
 def adapt_rally_to_toggle(reported_tasks, rally_tasks):
     days_ready_for_report = list()
     toggle_day = ToggleDay()
@@ -11,11 +26,8 @@ def adapt_rally_to_toggle(reported_tasks, rally_tasks):
     for task in rally_tasks:
         task.hours_done = task.hours_done / RALLY_DAY * TOGGLE_DAY
 
-        if task.name in reported_tasks.keys():
-            task.hours_done -= reported_tasks[task.name]
-            task.hours_done = round(task.hours_done, 1)
-
-        if task.hours_done <= 0:
+        should_continue, task = check_reported_data(reported_tasks, task)
+        if should_continue:
             continue
 
         days_count = int(task.hours_done / TOGGLE_DAY)
@@ -30,6 +42,17 @@ def adapt_rally_to_toggle(reported_tasks, rally_tasks):
         days_ready_for_report.append(toggle_day)
 
     return days_ready_for_report
+
+
+def check_reported_data(reported_tasks, task):
+    if task.name in reported_tasks.keys():
+        task.hours_done -= reported_tasks[task.name]
+        task.hours_done = round(task.hours_done, 1)
+
+    if task.hours_done <= 0:
+        return True, task
+
+    return False, task
 
 
 def fill_day(days_ready_for_report, toggle_day, name, hours, days_count=None):

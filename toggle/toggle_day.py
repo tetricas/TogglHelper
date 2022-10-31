@@ -17,9 +17,11 @@ class ToggleDay:
     MAX_HOURS = 8
     total_hours: int
     tasks: list
+    date: None
 
     def __init__(self):
         self.total_hours = 0
+        self.date = None
         self.tasks = list()
 
     def day_is_full(self):
@@ -31,7 +33,9 @@ class ToggleDay:
     def day_is_valid(self):
         return self.total_hours > 0
 
-    def append_task(self, name, time):
+    def append_task(self, name, time, date=None):
+        self.date = date
+
         if self.day_is_full():
             return False, 0
 
@@ -80,7 +84,7 @@ class ToggleDay:
                 hours_left = self.MAX_HOURS - HOURS_BEFORE_ENGLISH - 1
                 self.tasks.append(ToggleTask(self.tasks[0].name, hours_left))
         else:
-            self.tasks.insert(0, ToggleTask(daily_name, 0.25))
-            self.tasks[1].time -= 0.25  # 15 min for the Daily
+            self.tasks.insert(0, ToggleTask(daily_name, 0.5))
+            self.tasks[1].time -= 0.5  # 30 min for the Daily
 
         return self.tasks
