@@ -22,7 +22,17 @@ def query_jira_tasks(start_date):
 
         worklogs_url = jira_rest.host + jira_rest.issues_route + issue_id + jira_rest.worklog_route
         for worklog in jira.get_request(worklogs_url)['worklogs']:
-            text = worklog['comment']['content'][0]['content'][0]['text']
+            try:
+                content = worklog['comment']['content'][0]['content']
+                if content[0]['type'] == 'listItem':
+                    text = str()
+                    for element in content:
+                        text += element['content'][0]['content'][0]['text'] + ' and '
+                    text = text[:-5]
+                else:
+                    text = content[0]['text']
+            except KeyError as err:
+                text = "done"
             created = worklog['started']
             time_spent = worklog['timeSpentSeconds'] / 3600
 
