@@ -19,7 +19,8 @@ vacation = []
 project_id =
 organization_id =
 workspace_id =
-internal_id =" > "$FILE"
+internal_id =
+english_id = " > "$FILE"
 fi
 
 pip install -r requirements.txt
