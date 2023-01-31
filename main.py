@@ -17,7 +17,7 @@ if __name__ == '__main__':
     if was_full:
         last_day += timedelta(days=1)
 
-    this_month = list(get_this_month_range(last_day.day))
+    this_month = list(get_this_month_range(last_day))
 
     get_data_from = 'jira'
     days_to_report = list()

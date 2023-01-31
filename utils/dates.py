@@ -11,10 +11,12 @@ def get_this_month_range(day_from):
 
     ua_holidays = holidays.country_holidays(config.country)
     work_week = range(0, 5)
+
+    first_day = day_from.day if day_from.month == month else 1
     last_day = calendar.monthrange(year, month)[1]
     last_day = current_day if last_day > current_day else last_day
 
-    for i in range(day_from, last_day + 1):
+    for i in range(first_day, last_day + 1):
         day = date(year, month, i)
         weekday = day.weekday()
         if weekday in work_week and day not in ua_holidays and i not in config.vacation:
