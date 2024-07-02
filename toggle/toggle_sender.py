@@ -46,11 +46,11 @@ class ToggleSender:
         url = toggle_rest.host + toggle_rest.me_route + toggle_rest.time_entities_route
         data = self.request(url, method='GET')
         last_date = data[0]['stop']
-        last_date = datetime.datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%SZ").date()
+        last_date = datetime.datetime.strptime(last_date, "%Y-%m-%dT%H:%M:%S%z").date()
         day_hours = 0
         tasks_names = dict()
         for task in data:
-            current = datetime.datetime.strptime(task['stop'], "%Y-%m-%dT%H:%M:%SZ").date()
+            current = datetime.datetime.strptime(task['stop'], "%Y-%m-%dT%H:%M:%S%z").date()
             if current == last_date:
                 day_hours += task['duration']
 

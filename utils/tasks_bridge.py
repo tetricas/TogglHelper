@@ -9,6 +9,8 @@ def adapt_jira_to_toggle(reported_tasks, jira_tasks):
     toggle_day = ToggleDay()
 
     for task in jira_tasks:
+        task.hours_done = task.hours_done / RALLY_DAY * TOGGLE_DAY
+
         should_continue, task = check_reported_data(reported_tasks, task)
         if should_continue:
             continue

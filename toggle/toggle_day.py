@@ -50,41 +50,11 @@ class ToggleDay:
             self.total_hours += time_to_fill
             return True, time_left
 
-    def generate_report(self, is_friday):
+    def generate_report(self):
         if len(self.tasks) < 1:
             raise RuntimeError
 
-        if is_friday:
-            HOURS_BEFORE_ENGLISH = 4.5
-            if len(self.tasks) > 1:
-                time_before_english = 0
-                index = 0
-                while time_before_english < HOURS_BEFORE_ENGLISH:
-                    if time_before_english + self.tasks[index].time > HOURS_BEFORE_ENGLISH:
-                        time_after = self.tasks[index].time - (HOURS_BEFORE_ENGLISH - time_before_english)
-                        self.tasks[index].time -= round(time_after, 1)
-                        name = self.tasks[index].name
-                        index += 1
-                        self.tasks.insert(index, ToggleTask(english_name, 1))
-                        if time_after > 1:
-                            index += 1
-                            self.tasks.insert(index, ToggleTask(name, time_after - 1))
-                        break
-                    elif time_before_english + self.tasks[index].time == HOURS_BEFORE_ENGLISH:
-                        index += 1
-                        self.tasks.insert(index, ToggleTask(english_name, 1))
-                        index += 1
-                        self.tasks[index].time -= 1
-
-                    time_before_english += self.tasks[index].time
-                    index += 1
-            else:
-                self.tasks[0] = ToggleTask(self.tasks[0].name, HOURS_BEFORE_ENGLISH)
-                self.tasks.append(ToggleTask(english_name, 1))
-                hours_left = self.MAX_HOURS - HOURS_BEFORE_ENGLISH - 1
-                self.tasks.append(ToggleTask(self.tasks[0].name, hours_left))
-        else:
-            self.tasks.insert(0, ToggleTask(daily_name, 0.5))
-            self.tasks[1].time -= 0.5  # 30 min for the Daily
+        self.tasks.insert(0, ToggleTask(daily_name, 0.5))
+        self.tasks[1].time -= 0.5  # 30 min for the Daily
 
         return self.tasks

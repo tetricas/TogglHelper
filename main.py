@@ -41,7 +41,7 @@ if __name__ == '__main__':
         elif get_data_from == 'rally':
             day = days_to_report.pop(0)
 
-        report_data = day.generate_report(weekday == 4)
+        report_data = day.generate_report()
         current_time = datetime.strptime(beginning_of_the_day, '%H:%M')
 
         for task in report_data:
